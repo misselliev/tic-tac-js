@@ -6,10 +6,31 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <link rel="stylesheet" href="css/style.css" />
     <link rel="stylesheet" href="css/reset.css" />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="semantic/dist/semantic.min.css"
+    />
+    <script
+      src="https://code.jquery.com/jquery-3.1.1.min.js"
+      integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+      crossorigin="anonymous"
+    ></script>
+    <script src="semantic/dist/semantic.min.js"></script>
     <title>Arcade World</title>
   </head>
 
-  <body>
+  <body class="wall">
+    <div id="main-container" class="ui container">
+      <div id="header">
+        <h2 class="ui pink center aligned icon header">
+          <i class="circular gamepad icon"></i>
+          Tic tac toe war!
+        </h2>
+      </div>
+      <div id="board"></div>
+      <div id="score"></div>
+    </div>
     <script src="js/index.js"></script>
   </body>
 </html>
