@@ -4,3 +4,13 @@
 tr {
   height: 131px;
 }
+
+.table {
+  background-color: rgba(255,255,255,.7) !important;
+
+}
+.cell {
+  font-size: 50px;
+  text-align: center !important;
+  vertical-align: middle !important;
+}
