@@ -1,11 +1,22 @@
 // Creating Player with factory functions
 const Player = (name, mark) => {
-  let moves;
+  // let moves;
+  // let score;
   this.moves = [];
+  this.score = 0;
   const getPlayerName = () => name;
   const getPlayerMark = () => mark;
   const getPlayerMoves = () => moves;
-  return { name, mark, moves, getPlayerName, getPlayerMark, getPlayerMoves };
+  const getPlayerScore = () => score;
+  return {
+    name,
+    mark,
+    moves,
+    getPlayerName,
+    getPlayerMark,
+    getPlayerMoves,
+    getPlayerScore
+  };
 };
 
 // Creating a Module board
@@ -53,6 +64,8 @@ const Board = (() => {
   row3.appendChild(cell7);
   row3.appendChild(cell8);
   row3.appendChild(cell9);
+
+  return { boardgame };
 })();
 
 // Creating a Module for Game
@@ -74,4 +87,4 @@ const Game = (() => {
 })();
 
 // Manipulating DOM
-Board();
+// Board();
