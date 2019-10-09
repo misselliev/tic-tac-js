@@ -89,8 +89,9 @@ const Game = (() => {
     return cMove;
   }
 
-  return { turn, computersMove, turnClick, checkWinner };
-
+  return {
+    turn, computersMove, turnClick, checkWinner
+  };
 })();
 
 const Board = () => {
