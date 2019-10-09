@@ -90,7 +90,7 @@ const Game = (() => {
   }
 
   return {
-    turn, computersMove, turnClick, checkWinner
+    turn, computersMove, turnClick, checkWinner,
   };
 })();
 
