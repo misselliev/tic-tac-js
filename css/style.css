@@ -1,16 +1,23 @@
 .wall {
   background-image: url(https://images.unsplash.com/photo-1511882150382-421056c89033?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1502&q=80);
 }
+
 tr {
   height: 131px;
 }
 
 .table {
-  background-color: rgba(255,255,255,.7) !important;
-
+  background-color: rgba(255, 255, 255, .7) !important;
 }
+
 .cell {
   font-size: 50px;
   text-align: center !important;
   vertical-align: middle !important;
+}
+
+ul li {
+  background-color: rgba(255, 255, 255, .7) !important;
+  font-size: 24px;
+  margin-bottom: 1em;
 }
