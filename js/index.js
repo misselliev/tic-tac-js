@@ -7,27 +7,26 @@ class Player {
     this.mark = mark;
   }
 
-  getPlayerName = () => {
-    return this.name;
-  };
+  getPlayerName = () => this.name;
 
-  getPlayerMark = () => {
-    return this.mark;
-  };
+  getPlayerMark = () => this.mark;
 
-  getPlayerMoves = () => {
-    return this.moves;
-  };
+  getPlayerMoves = () => this.moves;
 
-  setPlayerMoves = (val) => {
-    return this.moves.push(parseInt(val, 10));
-  };
+  setPlayerMoves = (val) => this.moves.push(parseInt(val, 10));
 
-  getPlayerScore = () => {
-    return this.score;
-  };
+  getPlayerScore = () => this.score;
 }
-const streaks = [[1, 2, 3], [4, 5, 6], [7, 8, 9], [1, 4, 7], [2, 5, 8], [3, 6, 9], [1, 5, 9], [3, 5, 7]];
+const streaks = [
+  [1, 2, 3],
+  [4, 5, 6],
+  [7, 8, 9],
+  [1, 4, 7],
+  [2, 5, 8],
+  [3, 6, 9],
+  [1, 5, 9],
+  [3, 5, 7],
+];
 const human = new Player('Human', 'X');
 const computer = new Player('Computer', '0');
 
