@@ -6,13 +6,26 @@ class Player {
     this.score = 0;
     this.mark = mark;
   }
-
+  
   getPlayerName = () => this.name;
   getPlayerMark = () => this.mark;
   getPlayerMoves = () => this.moves;
   setPlayerMoves = val => this.moves.push(parseInt(val, 10));
   getPlayerScore = () => this.score;
 }
+
+const streaks = [
+  [1, 2, 3],
+  [4, 5, 6],
+  [7, 8, 9],
+  [1, 4, 7],
+  [2, 5, 8],
+  [3, 6, 9],
+  [1, 5, 9],
+  [3, 5, 7],
+];
+const human = new Player('Human', 'X');
+const computer = new Player('Computer', '0');
 
 Array.prototype.sample = function() {
   return this[Math.floor(Math.random() * this.length)];
@@ -35,16 +48,6 @@ function turnClick(cell) {
 }
 
 // Creating a Module board
-const streaks = [
-  [1, 2, 3],
-  [4, 5, 6],
-  [7, 8, 9],
-  [1, 4, 7],
-  [2, 5, 8],
-  [3, 6, 9],
-  [1, 5, 9],
-  [3, 5, 7],
-];
 const Board = () => {
   // Winning combos
   const initMoves = [[1, 2, 3], [4, 5, 6], [7, 8, 9]];
@@ -68,7 +71,7 @@ const Board = () => {
   return { boardgame };
 };
 
-const checkWinner = player => {
+const checkWinner = (player) => {
   if (player.moves.length >= 3) {
     for (let i = 0; i < streaks.length; i += 1) {
       const moves = player.getPlayerMoves();
@@ -89,8 +92,7 @@ const checkWinner = player => {
   return false;
 };
 // Creating a Module for Game
-const human = new Player('Human', 'X');
-const computer = new Player('Computer', '0');
+
 const Game = (() => {
   Board();
 
