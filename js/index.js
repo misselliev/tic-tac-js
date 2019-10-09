@@ -132,7 +132,7 @@ function clearGame() {
   computer.moves = [];
   document.getElementById('round_score').innerHTML = 'Good luck!';
   const btns = document.querySelectorAll('td');
-  btns.forEach(btn => {
+  btns.forEach((btn) => {
     btn.addEventListener('click', Game.turnClick);
     btn.innerHTML = '';
   });
