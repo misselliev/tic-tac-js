@@ -5,15 +5,14 @@ class Player {
     this.moves = [];
     this.score = 0;
     this.mark = mark;
-    let checkpoint = false;
   }
 
-  getPlayerName = () => this.name;
-  getPlayerMark = () => this.mark;
-  getPlayerMoves = () => this.moves;
-  setPlayerMoves = val => this.moves.push(parseInt(val));
-  getPlayerScore = () => score;
-}
+  function getPlayerName() {this.name;}
+  function getPlayerMark() {this.mark;}
+  function getPlayerMoves() {this.moves;}
+  function setPlayerMovesval() {this.moves.push(parseInt(val));}
+  function getPlayerScore() {score;
+}}
 
 Array.prototype.sample = function() {
   return this[Math.floor(Math.random() * this.length)];
