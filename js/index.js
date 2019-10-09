@@ -7,12 +7,12 @@ class Player {
     this.mark = mark;
   }
 
-  function getPlayerName() {this.name;}
-  function getPlayerMark() {this.mark;}
-  function getPlayerMoves() {this.moves;}
-  function setPlayerMovesval() {this.moves.push(parseInt(val));}
-  function getPlayerScore() {score;
-}}
+  getPlayerName = () => this.name;
+  getPlayerMark = () => this.mark;
+  getPlayerMoves = () => this.moves;
+  setPlayerMoves = (val) => this.moves.push(parseInt(val));
+  getPlayerScore = () => this.score;
+}
 
 Array.prototype.sample = function() {
   return this[Math.floor(Math.random() * this.length)];
