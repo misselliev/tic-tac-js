@@ -31,6 +31,27 @@ Array.prototype.sample = function() {
   return this[Math.floor(Math.random() * this.length)];
 };
 
+const checkWinner = (player) => {
+  if (player.moves.length >= 3) {
+    for (let i = 0; i < streaks.length; i += 1) {
+      const moves = player.getPlayerMoves();
+      const line = moves.filter(value => streaks[i].includes(value));
+      if (line.length === 3) {
+        player.score += 1;
+        if (player.name === 'Human') {
+          document.getElementById('human_score').innerHTML = `Your score : ${player.score}`;
+          document.getElementById('round_score').innerHTML = 'You win!';
+        } else {
+          document.getElementById('computer_score').innerHTML = `Computer score : ${player.score}`;
+          document.getElementById('round_score').innerHTML = 'Computer wins!';
+        }
+        return true;
+      }
+    }
+  }
+  return false;
+};
+
 function turn(cellId) {
   human.setPlayerMoves(cellId);
   document.getElementById(cellId).innerText = human.getPlayerMark();
@@ -71,26 +92,6 @@ const Board = () => {
   return { boardgame };
 };
 
-const checkWinner = (player) => {
-  if (player.moves.length >= 3) {
-    for (let i = 0; i < streaks.length; i += 1) {
-      const moves = player.getPlayerMoves();
-      const line = moves.filter(value => streaks[i].includes(value));
-      if (line.length === 3) {
-        player.score += 1;
-        if (player.name === 'Human') {
-          document.getElementById('human_score').innerHTML = `Your score : ${player.score}`;
-          document.getElementById('round_score').innerHTML = 'You win!';
-        } else {
-          document.getElementById('computer_score').innerHTML = `Computer score : ${player.score}`;
-          document.getElementById('round_score').innerHTML = 'Computer wins!';
-        }
-        return true;
-      }
-    }
-  }
-  return false;
-};
 // Creating a Module for Game
 
 const Game = (() => {
