@@ -37,6 +37,8 @@ const computer = new Player('Computer', '0');
 const Game = (() => {
   const checkWinner = (player) => {
     if (player.moves.length >= 3) {
+      const c = human.moves;
+      const joinMoves = c.concat(computer.moves);
       for (let i = 0; i < streaks.length; i += 1) {
         const moves = player.getPlayerMoves();
         const line = moves.filter(value => streaks[i].includes(value));
@@ -52,6 +54,10 @@ const Game = (() => {
           blockButtons();
           return true;
         }
+      }
+      if (joinMoves.length === 9) {
+        document.getElementById('round_score').innerHTML = 'Tie!';
+        return true;
       }
     }
     return false;
@@ -69,7 +75,7 @@ const Game = (() => {
       setTimeout(() => {
         Game.computersMove();
         checkWinner(computer);
-      }, 1000);
+      }, 0);
     }
   }
   function blockButtons() {
@@ -121,4 +127,21 @@ const Board = () => {
   return { boardgame };
 };
 
+function clearGame() {
+  human.moves = [];
+  computer.moves = [];
+  document.getElementById('round_score').innerHTML = 'Good luck!';
+  const btns = document.querySelectorAll('td');
+  btns.forEach(btn => {
+    btn.addEventListener('click', Game.turnClick);
+    btn.innerHTML = '';
+  });
+}
+
+function resetGame() {
+  const res = document.getElementById('reset_btn');
+  res.addEventListener('click', clearGame);
+}
+
 Board();
+resetGame();

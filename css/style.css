@@ -16,8 +16,13 @@ tr {
   vertical-align: middle !important;
 }
 
-ul li {
+.display {
   background-color: rgba(255, 255, 255, .7) !important;
   font-size: 24px;
   margin-bottom: 1em;
+  padding: 12px 12px 12px 12px;
+}
+
+.down {
+  margin-top: 100px !important;
 }
