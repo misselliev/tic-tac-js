@@ -30,12 +30,11 @@ const streaks = [
 const human = new Player('Human', 'X');
 const computer = new Player('Computer', '0');
 
-Array.prototype.sample = function () {
-  return this[Math.floor(Math.random() * this.length)];
-};
+// Array.prototype.sample = function () {
+//   return this[Math.floor(Math.random() * this.length)];
+// };
 
 const Game = (() => {
-
   const checkWinner = (player) => {
     if (player.moves.length >= 3) {
       for (let i = 0; i < streaks.length; i += 1) {
@@ -50,8 +49,7 @@ const Game = (() => {
             document.getElementById('computer_score').innerHTML = `Computer score : ${player.score}`;
             document.getElementById('round_score').innerHTML = 'Computer wins!';
           }
-          const squares = document.querySelectorAll('td');
-          squares.forEach(item => item.removeEventListener('click', turnClick));
+          blockButtons();
           return true;
         }
       }
@@ -63,7 +61,7 @@ const Game = (() => {
     human.setPlayerMoves(cellId);
     document.getElementById(cellId).innerText = human.getPlayerMark();
     document.getElementById(cellId).removeEventListener('click', turnClick);
-  };
+  }
   function turnClick(cell) {
     turn(cell.target.id);
     const winner = checkWinner(human);
@@ -74,12 +72,17 @@ const Game = (() => {
       }, 1000);
     }
   }
+  function blockButtons() {
+    const squares = document.querySelectorAll('td');
+    squares.forEach(item => item.removeEventListener('click', turnClick));
+  }
   function computersMove() {
     const cells = [1, 2, 3, 4, 5, 6, 7, 8, 9];
     const a = human.moves;
     const temp = a.concat(computer.moves);
     const available = cells.filter(item => !temp.includes(item));
-    const cMove = available.sample();
+    // const cMove = available.sample();
+    const cMove = available[Math.floor(Math.random() * available.length)];
     computer.setPlayerMoves(parseInt(cMove, 10));
     document.getElementById(cMove).innerHTML = '0';
     document.getElementById(cMove).removeEventListener('click', turnClick);
@@ -87,6 +90,7 @@ const Game = (() => {
   }
 
   return { turn, computersMove, turnClick, checkWinner };
+
 })();
 
 const Board = () => {
@@ -94,7 +98,7 @@ const Board = () => {
   const initMoves = [
     [1, 2, 3],
     [4, 5, 6],
-    [7, 8, 9]
+    [7, 8, 9],
   ];
   const boardgame = document.getElementById('board');
   const table = document.createElement('table');
