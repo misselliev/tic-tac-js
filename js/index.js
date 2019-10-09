@@ -7,11 +7,26 @@ class Player {
     this.mark = mark;
   }
   
-  getPlayerName = () => this.name;
-  getPlayerMark = () => this.mark;
-  getPlayerMoves = () => this.moves;
-  setPlayerMoves = val => this.moves.push(parseInt(val, 10));
-  getPlayerScore = () => this.score;
+  getPlayerName = () => {
+    return this.name;
+  }
+
+  getPlayerMark = () => {
+    return this.mark;
+  }
+
+  getPlayerMoves = () => {
+    return this.moves;
+  }
+
+  setPlayerMoves = val => {
+    return this.moves.push(parseInt(val, 10));
+  }
+
+  getPlayerScore = () => {
+    return this.score;
+  }
+
 }
 
 const streaks = [
