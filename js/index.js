@@ -1,6 +1,7 @@
 // Creating Player with factory functions
 class Player {
   constructor(name, mark) {
+    this.name = name;
     this.moves = [];
     this.score = 0;
     this.mark = mark;
@@ -12,19 +13,6 @@ class Player {
   getPlayerMoves = () => this.moves;
   setPlayerMoves = val => this.moves.push(parseInt(val));
   getPlayerScore = () => score;
-  // return {
-  //   name,
-  //   mark,
-  //   moves,
-  //   getPlayerName,
-  //   getPlayerMark,
-  //   getPlayerMoves,
-  //   getPlayerScore,
-  //   setPlayerMoves,
-  //   checkpoint
-  // };
-  // let moves;
-  // let score;
 }
 
 Array.prototype.sample = function() {
@@ -39,18 +27,18 @@ const placeMove = (position, player) => {
 };
 
 // Creating a Module board
+const streaks = [
+  [1, 2, 3],
+  [4, 5, 6],
+  [7, 8, 9],
+  [1, 4, 7],
+  [2, 5, 8],
+  [3, 6, 9],
+  [1, 5, 9],
+  [3, 5, 7]
+];
 const Board = () => {
   // Winning combos
-  const streaks = [
-    [1, 2, 3],
-    [4, 5, 6],
-    [7, 8, 9],
-    [1, 4, 7],
-    [2, 5, 8],
-    [3, 6, 9],
-    [1, 5, 9],
-    [3, 5, 7]
-  ];
   const initMoves = [[1, 2, 3], [4, 5, 6], [7, 8, 9]];
   const boardgame = document.getElementById("board");
   const table = document.createElement("table");
@@ -61,7 +49,6 @@ const Board = () => {
     const row = document.createElement("tr");
     items.forEach(val => {
       const cell = document.createElement("td");
-      cell.innerHTML = val;
       cell.setAttribute("id", val);
       cell.className = "cell";
       cell.addEventListener("click", turnClick, false);
@@ -70,70 +57,69 @@ const Board = () => {
     table.appendChild(row);
   });
 
-  const checkWinner = player => {
-    streaks.forEach(item => {
-      const moves = player.getPlayerMoves;
-      let line = moves.filter(value => item.includes(value));
-      if (line.length === 3) {
-        return true;
-      }
-    });
-    return false;
-  };
-  return { boardgame, checkWinner };
+  return { boardgame };
 };
 
+const checkWinner = player => {
+  if (player.moves.length >= 3) {
+    for (let i = 0; i < streaks.length; i += 1) {
+      const moves = player.getPlayerMoves();
+      let line = moves.filter(value => streaks[i].includes(value));
+      if (line.length === 3) {
+        player.score += 1;
+        if (player.name === "Human") {
+          document.getElementById(
+            "human_score"
+          ).innerHTML = `Your score : ${player.score}`;
+          document.getElementById("round_score").innerHTML = "You win!";
+        } else {
+          document.getElementById(
+            "computer_score"
+          ).innerHTML = `Computer score : ${player.score}`;
+          document.getElementById("round_score").innerHTML = "Computer wins!";
+        }
+        return true;
+      }
+    }
+  }
+  return false;
+};
 // Creating a Module for Game
-player1 = new Player("Player 1", "X");
+human = new Player("Human", "X");
+computer = new Player("Computer", "0");
 const Game = (() => {
   board = Board();
-  computer = new Player("Player 2", "0");
 
   function computersMove() {
     console.log("computers move");
     const cells = [1, 2, 3, 4, 5, 6, 7, 8, 9];
-    const available = cells.filter(
-      item => !player1.getPlayerMoves().includes(item)
-    );
+    let a = human.moves;
+    let temp = a.concat(computer.moves);
+    const available = cells.filter(item => !temp.includes(item));
     let cMove = available.sample();
     computer.setPlayerMoves(parseInt(cMove));
     console.log(cMove);
     document.getElementById(cMove).innerHTML = "0";
     return cMove;
   }
-
-  let isWinner = false;
-  // while (!isWinner) {
-  // if (player1.checkpoint) {
-  //   setTimeout(() => {
-  //     computersMove();
-  //   }, 1000);
-  //   isWinner = true;
-  // }
-
-  // }
   return { turn, computersMove };
 })();
 
 function turn(cellId) {
   console.log("cellId ", cellId);
-  console.log("player ", player1);
-  player1.checkpoint = true;
-  player1.setPlayerMoves(cellId);
-  document.getElementById(cellId).innerText = player1.getPlayerMark();
-  player1.checkpoint = false;
+  console.log("player ", human);
+  human.setPlayerMoves(cellId);
+  document.getElementById(cellId).innerText = human.getPlayerMark();
 }
 
 function turnClick(cell) {
   console.log("cell " + cell.target.id);
   turn(cell.target.id);
-  // if (player1.checkpoint) {
-  setTimeout(() => {
-    Game.computersMove();
-  }, 1000);
-  // isWinner = true;
-  // }
+  let winner = checkWinner(human);
+  if (winner === false) {
+    setTimeout(() => {
+      Game.computersMove();
+      checkWinner(computer);
+    }, 1000);
+  }
 }
-
-// Manipulating DOM
-// Game.computersMove();
