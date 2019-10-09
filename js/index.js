@@ -34,46 +34,61 @@ Array.prototype.sample = function () {
   return this[Math.floor(Math.random() * this.length)];
 };
 
-const checkWinner = (player) => {
-  if (player.moves.length >= 3) {
-    for (let i = 0; i < streaks.length; i += 1) {
-      const moves = player.getPlayerMoves();
-      const line = moves.filter(value => streaks[i].includes(value));
-      if (line.length === 3) {
-        player.score += 1;
-        if (player.name === 'Human') {
-          document.getElementById('human_score').innerHTML = `Your score : ${player.score}`;
-          document.getElementById('round_score').innerHTML = 'You win!';
-        } else {
-          document.getElementById('computer_score').innerHTML = `Computer score : ${player.score}`;
-          document.getElementById('round_score').innerHTML = 'Computer wins!';
+const Game = (() => {
+
+  const checkWinner = (player) => {
+    if (player.moves.length >= 3) {
+      for (let i = 0; i < streaks.length; i += 1) {
+        const moves = player.getPlayerMoves();
+        const line = moves.filter(value => streaks[i].includes(value));
+        if (line.length === 3) {
+          player.score += 1;
+          if (player.name === 'Human') {
+            document.getElementById('human_score').innerHTML = `Your score : ${player.score}`;
+            document.getElementById('round_score').innerHTML = 'You win!';
+          } else {
+            document.getElementById('computer_score').innerHTML = `Computer score : ${player.score}`;
+            document.getElementById('round_score').innerHTML = 'Computer wins!';
+          }
+          const squares = document.querySelectorAll('td');
+          squares.forEach(item => item.removeEventListener('click', turnClick));
+          return true;
         }
-        const squares = document.querySelectorAll('td');
-        squares.forEach(item => item.removeEventListener('click', turnClick));
-        return true;
       }
     }
-  }
-  return false;
-};
+    return false;
+  };
 
-function turn(cellId) {
-  human.setPlayerMoves(cellId);
-  document.getElementById(cellId).innerText = human.getPlayerMark();
-  document.getElementById(cellId).removeEventListener('click', turnClick);
-}
-function turnClick(cell) {
-  turn(cell.target.id);
-  const winner = checkWinner(human);
-  if (winner === false) {
-    setTimeout(() => {
-      Game.computersMove();
-      checkWinner(computer);
-    }, 1000);
+  function turn(cellId) {
+    human.setPlayerMoves(cellId);
+    document.getElementById(cellId).innerText = human.getPlayerMark();
+    document.getElementById(cellId).removeEventListener('click', turnClick);
+  };
+  function turnClick(cell) {
+    turn(cell.target.id);
+    const winner = checkWinner(human);
+    if (winner === false) {
+      setTimeout(() => {
+        Game.computersMove();
+        checkWinner(computer);
+      }, 1000);
+    }
   }
-}
+  function computersMove() {
+    const cells = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+    const a = human.moves;
+    const temp = a.concat(computer.moves);
+    const available = cells.filter(item => !temp.includes(item));
+    const cMove = available.sample();
+    computer.setPlayerMoves(parseInt(cMove, 10));
+    document.getElementById(cMove).innerHTML = '0';
+    document.getElementById(cMove).removeEventListener('click', turnClick);
+    return cMove;
+  }
 
-// Creating a Module board
+  return { turn, computersMove, turnClick, checkWinner };
+})();
+
 const Board = () => {
   // Winning combos
   const initMoves = [
@@ -92,7 +107,7 @@ const Board = () => {
       const cell = document.createElement('td');
       cell.setAttribute('id', val);
       cell.className = 'cell';
-      cell.addEventListener('click', turnClick, false);
+      cell.addEventListener('click', Game.turnClick, false);
       row.appendChild(cell);
     });
     table.appendChild(row);
@@ -101,21 +116,4 @@ const Board = () => {
   return { boardgame };
 };
 
-// Creating a Module for Game
-
-const Game = (() => {
-  Board();
-
-  function computersMove() {
-    const cells = [1, 2, 3, 4, 5, 6, 7, 8, 9];
-    const a = human.moves;
-    const temp = a.concat(computer.moves);
-    const available = cells.filter(item => !temp.includes(item));
-    const cMove = available.sample();
-    computer.setPlayerMoves(parseInt(cMove, 10));
-    document.getElementById(cMove).innerHTML = '0';
-    document.getElementById(cMove).removeEventListener('click', turnClick);
-    return cMove;
-  }
-  return { turn, computersMove };
-})();
+Board();
