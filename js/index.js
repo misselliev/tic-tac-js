@@ -8,9 +8,13 @@ class Player {
   }
 
   getPlayerName = () => this.name;
+
   getPlayerMark = () => this.mark;
+  
   getPlayerMoves = () => this.moves;
-  setPlayerMoves = (val) => this.moves.push(parseInt(val));
+  
+  setPlayerMoves = val => this.moves.push(parseInt(val, 10));
+  
   getPlayerScore = () => this.score;
 }
 
