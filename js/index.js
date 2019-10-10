@@ -40,7 +40,7 @@ const displayWinner = (player) => {
   document.getElementById('round_score').innerHTML = str;
 };
 
-const displayTie = () => { document.getElementById('round_score').innerHTML = 'Tie!' };
+const displayTie = () => { document.getElementById('round_score').innerHTML = 'Tie!'; };
 
 const Game = (() => {
   const streaks = [
@@ -110,7 +110,7 @@ const Game = (() => {
     return cMove;
   };
 
-  return {turnClick};
+  return { turnClick };
 })();
 
 const Board = () => {
@@ -150,7 +150,7 @@ const Board = () => {
   });
 
   setResetButton();
-  return {boardGame};
+  return { boardGame };
 };
 
 Board();
