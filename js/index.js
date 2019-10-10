@@ -1,5 +1,4 @@
-'use strict';
-const Player = ( name, mark ) => {
+const Player = (name, mark) => {
   let moves = [];
   let score = 0;
 
@@ -15,102 +14,125 @@ const Player = ( name, mark ) => {
 
   const getPlayerScore = () => score;
 
-  return { name, mark, score, getPlayerMark, getPlayerMoves, getPlayerName, getPlayerScore, setPlayerMoves, resetPlayerMoves }
+  return {
+    name,
+    mark,
+    score,
+    getPlayerMark,
+    getPlayerMoves,
+    getPlayerName,
+    getPlayerScore,
+    setPlayerMoves,
+    resetPlayerMoves,
+  }
 };
 
-const streaks = [
-  [1, 2, 3],
-  [4, 5, 6],
-  [7, 8, 9],
-  [1, 4, 7],
-  [2, 5, 8],
-  [3, 6, 9],
-  [1, 5, 9],
-  [3, 5, 7],
-];
 const human = Player('Human', 'X');
 const computer = Player('Computer', '0');
 
-// Array.prototype.sample = function () {
-//   return this[Math.floor(Math.random() * this.length)];
-// };
+const displayWinner = (player) => {
+  const str = (player.getPlayerName() === 'Human') ? 'You win!' : 'Computer wins!';
+  const elemId = (player.getPlayerName() === 'Human') ? 'human_score' : 'computer_score';
+  document.getElementById(elemId).innerHTML = player.score;
+  document.getElementById('round_score').innerHTML = str;
+};
+
+const displayTie = () => document.getElementById('round_score').innerHTML = 'Tie!';
 
 const Game = (() => {
+  const streaks = [
+    [1, 2, 3],
+    [4, 5, 6],
+    [7, 8, 9],
+    [1, 4, 7],
+    [2, 5, 8],
+    [3, 6, 9],
+    [1, 5, 9],
+    [3, 5, 7],
+  ];
   const checkWinner = (player) => {
     if (player.getPlayerMoves().length >= 3) {
-      const c = human.getPlayerMoves();
-      const joinMoves = c.concat(computer.getPlayerMoves());
+      let usedCells = human.getPlayerMoves();
+      usedCells = usedCells.concat(computer.getPlayerMoves());
+
       for (let i = 0; i < streaks.length; i += 1) {
         const moves = player.getPlayerMoves();
         const line = moves.filter(value => streaks[i].includes(value));
         if (line.length === 3) {
           player.score += 1;
-          if (player.name === 'Human') {
-            document.getElementById('human_score').innerHTML = `Your score : ${player.score}`;
-            document.getElementById('round_score').innerHTML = 'You win!';
-          } else {
-            document.getElementById('computer_score').innerHTML = `Computer score : ${player.score}`;
-            document.getElementById('round_score').innerHTML = 'Computer wins!';
-          }
+          displayWinner(player);
           blockButtons();
           return true;
         }
       }
-      if (joinMoves.length === 9) {
-        document.getElementById('round_score').innerHTML = 'Tie!';
+      if (usedCells.length === 9) {
+        displayTie();
         return true;
       }
     }
     return false;
   };
 
-  function turn(cellId) {
+  const turn = (cellId) => {
     human.setPlayerMoves(cellId);
     document.getElementById(cellId).innerText = human.mark;
     document.getElementById(cellId).removeEventListener('click', turnClick);
-  }
-  function turnClick(cell) {
+  };
+
+  const turnClick = (cell) => {
     turn(cell.target.id);
     const winner = checkWinner(human);
     if (winner === false) {
       setTimeout(() => {
-        Game.computersMove();
+        computersMove();
         checkWinner(computer);
       }, 500);
     }
-  }
-  function blockButtons() {
+  };
+
+  const blockButtons = () => {
     const squares = document.querySelectorAll('td');
     squares.forEach(item => item.removeEventListener('click', turnClick));
-  }
-  function computersMove() {
+  };
+
+  const computersMove = () => {
     const cells = [1, 2, 3, 4, 5, 6, 7, 8, 9];
-    const a = human.getPlayerMoves();
-    const temp = a.concat(computer.getPlayerMoves());
-    const available = cells.filter(item => !temp.includes(item));
+    let occupied = human.getPlayerMoves();
+    occupied = occupied.concat(computer.getPlayerMoves());
+    const available = cells.filter(item => !occupied.includes(item));
     const cMove = available[Math.floor(Math.random() * available.length)];
     computer.setPlayerMoves(parseInt(cMove, 10));
     document.getElementById(cMove).innerHTML = computer.mark;
     document.getElementById(cMove).removeEventListener('click', turnClick);
     return cMove;
-  }
-
-  return {
-    turn, computersMove, turnClick, checkWinner,
   };
+
+  return {turnClick};
 })();
 
 const Board = () => {
-  // Winning combos
-  const initMoves = [
-    [1, 2, 3],
-    [4, 5, 6],
-    [7, 8, 9],
-  ];
-  const boardgame = document.getElementById('board');
+  const initMoves = [[1, 2, 3], [4, 5, 6], [7, 8, 9]];
+
+  const boardGame = document.getElementById('board');
   const table = document.createElement('table');
   table.classList = 'ui celled table';
-  boardgame.appendChild(table);
+  boardGame.appendChild(table);
+
+  const clearGame = () => {
+    human.resetPlayerMoves();
+    computer.resetPlayerMoves();
+    document.getElementById('round_score').innerHTML = 'Good luck!';
+    const btns = document.querySelectorAll('td');
+    btns.forEach((btn) => {
+      btn.addEventListener('click', Game.turnClick);
+      btn.innerHTML = '';
+    });
+  };
+
+  const setResetButton = () => {
+    const res = document.getElementById('reset_btn');
+    res.addEventListener('click', clearGame);
+  };
 
   initMoves.forEach((items) => {
     const row = document.createElement('tr');
@@ -124,24 +146,8 @@ const Board = () => {
     table.appendChild(row);
   });
 
-  return { boardgame };
+  setResetButton();
+  return {boardGame};
 };
 
-function clearGame() {
-  human.resetPlayerMoves();
-  computer.resetPlayerMoves();
-  document.getElementById('round_score').innerHTML = 'Good luck!';
-  const btns = document.querySelectorAll('td');
-  btns.forEach((btn) => {
-    btn.addEventListener('click', Game.turnClick);
-    btn.innerHTML = '';
-  });
-}
-
-function resetGame() {
-  const res = document.getElementById('reset_btn');
-  res.addEventListener('click', clearGame);
-}
-
 Board();
-resetGame();
