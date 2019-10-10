@@ -1,22 +1,23 @@
-// Creating Player with factory functions
-class Player {
-  constructor(name, mark) {
-    this.name = name;
-    this.moves = [];
-    this.score = 0;
-    this.mark = mark;
-  }
+'use strict';
+const Player = ( name, mark ) => {
+  let moves = [];
+  let score = 0;
 
-  getPlayerName = () => this.name;
+  const getPlayerName = () => name;
 
-  getPlayerMark = () => this.mark;
+  const getPlayerMark = () => mark;
 
-  getPlayerMoves = () => this.moves;
+  const getPlayerMoves = () => moves;
 
-  setPlayerMoves = val => this.moves.push(parseInt(val, 10));
+  const setPlayerMoves = val => moves.push(parseInt(val, 10));
 
-  getPlayerScore = () => this.score;
-}
+  const resetPlayerMoves = () => moves = [];
+
+  const getPlayerScore = () => score;
+
+  return { name, mark, score, getPlayerMark, getPlayerMoves, getPlayerName, getPlayerScore, setPlayerMoves, resetPlayerMoves }
+};
+
 const streaks = [
   [1, 2, 3],
   [4, 5, 6],
@@ -27,8 +28,8 @@ const streaks = [
   [1, 5, 9],
   [3, 5, 7],
 ];
-const human = new Player('Human', 'X');
-const computer = new Player('Computer', '0');
+const human = Player('Human', 'X');
+const computer = Player('Computer', '0');
 
 // Array.prototype.sample = function () {
 //   return this[Math.floor(Math.random() * this.length)];
@@ -36,9 +37,9 @@ const computer = new Player('Computer', '0');
 
 const Game = (() => {
   const checkWinner = (player) => {
-    if (player.moves.length >= 3) {
-      const c = human.moves;
-      const joinMoves = c.concat(computer.moves);
+    if (player.getPlayerMoves().length >= 3) {
+      const c = human.getPlayerMoves();
+      const joinMoves = c.concat(computer.getPlayerMoves());
       for (let i = 0; i < streaks.length; i += 1) {
         const moves = player.getPlayerMoves();
         const line = moves.filter(value => streaks[i].includes(value));
@@ -65,7 +66,7 @@ const Game = (() => {
 
   function turn(cellId) {
     human.setPlayerMoves(cellId);
-    document.getElementById(cellId).innerText = human.getPlayerMark();
+    document.getElementById(cellId).innerText = human.mark;
     document.getElementById(cellId).removeEventListener('click', turnClick);
   }
   function turnClick(cell) {
@@ -75,7 +76,7 @@ const Game = (() => {
       setTimeout(() => {
         Game.computersMove();
         checkWinner(computer);
-      }, 0);
+      }, 500);
     }
   }
   function blockButtons() {
@@ -84,13 +85,12 @@ const Game = (() => {
   }
   function computersMove() {
     const cells = [1, 2, 3, 4, 5, 6, 7, 8, 9];
-    const a = human.moves;
-    const temp = a.concat(computer.moves);
+    const a = human.getPlayerMoves();
+    const temp = a.concat(computer.getPlayerMoves());
     const available = cells.filter(item => !temp.includes(item));
-    // const cMove = available.sample();
     const cMove = available[Math.floor(Math.random() * available.length)];
     computer.setPlayerMoves(parseInt(cMove, 10));
-    document.getElementById(cMove).innerHTML = '0';
+    document.getElementById(cMove).innerHTML = computer.mark;
     document.getElementById(cMove).removeEventListener('click', turnClick);
     return cMove;
   }
@@ -128,8 +128,8 @@ const Board = () => {
 };
 
 function clearGame() {
-  human.moves = [];
-  computer.moves = [];
+  human.resetPlayerMoves();
+  computer.resetPlayerMoves();
   document.getElementById('round_score').innerHTML = 'Good luck!';
   const btns = document.querySelectorAll('td');
   btns.forEach((btn) => {
