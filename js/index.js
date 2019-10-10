@@ -1,6 +1,6 @@
 const Player = (name, mark) => {
   let moves = [];
-  let score = 0;
+  const score = 0;
 
   const getPlayerName = () => name;
 
