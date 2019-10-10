@@ -10,7 +10,10 @@ const Player = (name, mark) => {
 
   const setPlayerMoves = val => moves.push(parseInt(val, 10));
 
-  const resetPlayerMoves = () => moves = [];
+  const resetPlayerMoves = () => {
+    moves = [];
+    return moves;
+  };
 
   const getPlayerScore = () => score;
 
@@ -24,7 +27,7 @@ const Player = (name, mark) => {
     getPlayerScore,
     setPlayerMoves,
     resetPlayerMoves,
-  }
+  };
 };
 
 const human = Player('Human', 'X');
@@ -37,7 +40,7 @@ const displayWinner = (player) => {
   document.getElementById('round_score').innerHTML = str;
 };
 
-const displayTie = () => document.getElementById('round_score').innerHTML = 'Tie!';
+const displayTie = () => { document.getElementById('round_score').innerHTML = 'Tie!' };
 
 const Game = (() => {
   const streaks = [
