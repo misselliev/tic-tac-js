@@ -4,9 +4,15 @@ Building a tic tac toe you can play in your browser.
 
 Powered by JS and lots of coffee.
 
+## Usage
+
+To play locally, download the repository and run index.html in your browser.
+
 ## Live
 
-You can look at our live version here //link to be updated
+You can look at our live version [here](https://misselliev.github.io/tic-tac-js/) 
+
+Happy playing! 
 
 ## Developers
 
