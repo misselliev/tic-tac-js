@@ -24,7 +24,6 @@
     "url": "https://github.com/misselliev/tic-tac-js/issues"
   },
   "homepage": "https://github.com/misselliev/tic-tac-js#readme",
-  "devDependencies": {
-    "semantic-ui": "^2.4.2"
+  "dependencies": {
   }
 }
