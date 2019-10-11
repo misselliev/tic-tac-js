@@ -1,0 +1,29 @@
+{
+  "name": "tic-tac-js",
+  "version": "1.0.0",
+  "description": "Tic tac toe game in javascript",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/misselliev/tic-tac-js.git"
+  },
+  "keywords": [
+    "javascript",
+    "game",
+    "factory",
+    "function",
+    "module",
+    "odin"
+  ],
+  "author": "Elizabeth Villalejos, Santiago Torres",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/misselliev/tic-tac-js/issues"
+  },
+  "homepage": "https://github.com/misselliev/tic-tac-js#readme",
+  "dependencies": {
+  }
+}
